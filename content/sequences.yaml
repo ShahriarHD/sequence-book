@@ -1,0 +1,10 @@
+sequences:
+  - title: Gatemaker
+    steps:
+      - gatemaker/1.md
+      - gatemaker/2.md
+
+  - title: Feeling Map
+    steps:
+      - feeling-map/1.md
+      - feeling-map/2.md

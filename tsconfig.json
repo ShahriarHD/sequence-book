@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "checkJs": true,
+        "moduleResolution": "node",
+        "isolatedModules": true,
+        "esModuleInterop": true,
+    },
+    "include": [
+        "src"
+    ]
+}
