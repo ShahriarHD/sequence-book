@@ -4,12 +4,12 @@ import markItDownFootNote from 'markdown-it-footnote';
 const markdown = new MarkdownIt().use(markItDownFootNote);
 
 // customize links with target="_blank"
-const defaultRender = markdown.renderer.rules.link_open || function(tokens, idx, options, _, self) {
+const defaultRender = markdown.renderer.rules.link_open || function (tokens, idx, options, _, self) {
     return self.renderToken(tokens, idx, options);
 };
 
 // eslint-disable-next-line camelcase
-markdown.renderer.rules.link_open = function(tokens, idx, options, env, self) {
+markdown.renderer.rules.link_open = function (tokens, idx, options, env, self) {
     // If you are sure other plugins can't add `target` - drop check below
     const aIndex = tokens[idx].attrIndex('target');
 

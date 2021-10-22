@@ -7,17 +7,25 @@ export class TemplateRenderer {
     private content: string;
     private context: Context;
 
-    constructor (template: string, context: Context) {
+    constructor(template: string, context: Context) {
         this.content = template;
-        this.context = context;
+        this.context = getFlatContext(context);
     }
 
     public render(): string {
-        return this
-            .renderIncludes()
-            .renderUse()
-            .injectContext()
-            .content;
+        let previousContent = '';
+
+        while (previousContent !== this.content) {
+            previousContent = this.content;
+
+            this
+                .renderIncludes()
+                .renderUse()
+                .injectContext()
+                .renderForLoops()
+        }
+
+        return this.content;
     }
 
     private renderIncludes(): TemplateRenderer {
@@ -25,12 +33,7 @@ export class TemplateRenderer {
         const includeRegex = /@include\s+(?<name>\w+)/g;
         this.content = this.content.replace(
             includeRegex,
-            /**
-             * @param {any} _
-             * @param {string} name
-             * @returns {string}
-             */
-            (_, name) => {
+            (_: any, name: string) => {
                 const fileName = name.endsWith('.html') ? name : `${name}.html`;
                 const filePath = path.join(templatesDir, fileName);
 
@@ -46,12 +49,7 @@ export class TemplateRenderer {
         const includeRegex = /@use\s+(?<name>\w+)/g;
         this.content = this.content.replace(
             includeRegex,
-            /**
-             * @param {any} _
-             * @param {string} name
-             * @returns {string}
-             */
-            (_, name) => {
+            (_: any, name: string) => {
                 const fileName = name.endsWith('.html') ? name : `${name}.html`;
                 const filePath = path.join(componentsDir, fileName);
 
@@ -73,4 +71,50 @@ export class TemplateRenderer {
 
         return this;
     }
+
+    private renderForLoops(): TemplateRenderer {
+        for (const varName of Object.keys(this.context)) {
+            const value = this.context[varName];
+
+            if (typeof value !== 'object') {
+                continue;
+            }
+
+            const pattern = new RegExp(`@for ${varName}\\S*(?<body>.*)\\S*@endfor`, 'sg');
+
+            this.content = this.content.replace(
+                pattern,
+                (_: any, loopBody: string) => {
+                    const parts = Object.values(value).map(item => {
+                        const loopRenderer = new TemplateRenderer(loopBody, { item });
+                        return loopRenderer.render();
+                    });
+
+                    return parts.join('');
+                }
+            );
+        }
+
+        return this;
+    }
+}
+
+function getFlatContext(context: Context, prefix?: string): Context {
+    let result = {};
+    for (const varName of Object.keys(context)) {
+        const name = prefix ? `${prefix}->${varName}` : varName;
+
+        const value = context[varName];
+
+        if (typeof value === 'object') {
+            result = {
+                ...result,
+                ...getFlatContext(value, name)
+            };
+        }
+
+        result[name] = value;
+    }
+
+    return result;
 }
