@@ -1,9 +1,11 @@
 export interface SequenceConfig {
+    index: string,
     sequences: Sequence[]
 }
 
 export interface Sequence {
-    title: string
+    index: string,
+    title: string,
     steps: string[]
 }
 

@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { TemplateRenderer } from './core/engine';
 import { renderStepToHTML, renderTableOfContents } from './core/renderer';
-import { readSequenceConfig, setupFiles } from './core/setup';
+import { copyPublicFolder, readSequenceConfig, setupFiles } from './core/setup';
 import { LinkDetails, Sequence } from './core/types';
 import { OUTPUT_DIR } from './utils/constant';
 import { writeFile } from './utils/file';
@@ -18,8 +17,9 @@ function buildWebsite() {
         const seqLinks = config.sequences.map(buildSequencePages);
         const indexFilePath = path.join(OUTPUT_DIR, 'index.html');
 
-        const toc = renderTableOfContents('Unfolding Sequences', seqLinks);
+        const toc = renderTableOfContents('visions of color', seqLinks, config.index);
         writeFile(indexFilePath, toc);
+        copyPublicFolder();
     } catch (error) {
         console.error('Encountered an error while building the website', error);
     }
@@ -44,11 +44,11 @@ function buildSequencePages(seq: Sequence): LinkDetails {
             url: stepURL,
         });
 
-        writeFile(stepPath, renderStepToHTML(title, step));
+        writeFile(stepPath, renderStepToHTML(title, step,seqURL, i, i === seq.steps.length - 1));
     }
 
     // build index file
-    const toc = renderTableOfContents(seq.title, stepLinks);
+    const toc = renderTableOfContents(seq.title, stepLinks, seq.index);
     const indexFilePath = path.join(seqPath, 'toc.html');
     writeFile(indexFilePath, toc);
 

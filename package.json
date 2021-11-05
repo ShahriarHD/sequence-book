@@ -4,8 +4,9 @@
   "description": "",
   "main": "src/main.ts",
   "scripts": {
-    "start": "npm run build && npm run serve",
+    "start": "npm run build && run-p watch serve",
     "build": "ts-node src/main.ts",
+    "watch": "chokidar \"src/**/*.(ts|html|css)\" \"content/**/*.md\" -c \"npm run build\"",
     "serve": "reload -b -p 8081 -d build/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,12 +14,18 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^16.11.3",
+    "autoprefixer": "^10.4.0",
+    "chokidar-cli": "^3.0.0",
     "markdown-it": "^12.2.0",
     "markdown-it-footnote": "^3.0.3",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.3.11",
     "reload": "^3.2.0",
+    "tailwindcss": "^2.2.19",
     "ts-node": "^10.3.1",
     "tslib": "^2.3.1",
     "typescript": "^4.4.4",
     "yaml": "^1.10.2"
-  }
+  },
+  "dependencies": {}
 }

@@ -2,8 +2,30 @@
 <html lang="en">
 <head>
     @include head
+    <style>
+        nav {
+            width: 420px;
+            padding: var(--space-size-8);
+            display: flex;
+            justify-content: space-around;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-size: var(--space-size-8);
+        }
+    </style>
 </head>
 <body>
-    {{ content }}
+    <main>
+        {{ content }}
+    </main>
+    <nav>
+        <a href="{{prevStepURL}}">⬅️</a>
+        <a href="{{nextStepURL}}">➡️</a>
+    </nav>
+    <script>
+        window.step = "{{index}}";
+    </script>
 </body>
 </html>

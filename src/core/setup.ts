@@ -3,7 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import YAML from 'yaml';
-import { CONTENT_DIR, OUTPUT_DIR } from '../utils/constant';
+import { CONTENT_DIR, OUTPUT_DIR, PUBLIC_DIR } from '../utils/constant';
 import { readFile } from '../utils/file';
 import { SequenceConfig } from './types';
 
@@ -22,4 +22,11 @@ export function readSequenceConfig(): SequenceConfig {
     const config: SequenceConfig = YAML.parse(configContent);
 
     return config;
+}
+
+export function copyPublicFolder() {
+
+    fs.readdirSync(PUBLIC_DIR).forEach(file => {
+        fs.copyFileSync(path.join(PUBLIC_DIR, file), path.join(OUTPUT_DIR,file));
+    });
 }

@@ -1,10 +1,25 @@
+index: 'index.md'
 sequences:
-  - title: Gatemaker
+  - title: Inner Light
+    index: see-light/index.md
     steps:
-      - gatemaker/1.md
-      - gatemaker/2.md
+      - see-light/1.md
 
-  - title: Feeling Map
+  - title: Process which produces inner Light
+    index: process/index.md
     steps:
-      - feeling-map/1.md
-      - feeling-map/2.md
+      - process/1.md
+
+  - title: Practice 1
+    index: task1/index.md
+    steps:
+      - task1/1.md
+      - task1/2.md
+      - task1/3.md
+      - task1/4.md
+      - task1/5.md
+
+  - title: 11 Color Properties
+    index: properties/index.md
+    steps:
+      - process/1.md

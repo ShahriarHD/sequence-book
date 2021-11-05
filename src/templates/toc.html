@@ -2,8 +2,51 @@
 <html lang="en">
 <head>
     @include head
+    <style>
+        main h1 {
+            color: var(--color-black);
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        h3 {
+            font-size: var(--space-size-7);
+            color: var(--color-gray-700);
+            line-height:1;
+        }
+
+        ul {
+            background-color: rgba(255,255,255,0.7);
+            border-radius: var(--space-size-4);
+            padding: calc(2 * var(--space-size-8));
+            box-shadow: 2px 2px 15px -5px rgba(0, 0, 0, 0.2);
+            list-style: none;
+        }
+
+        ul li {
+            font-size: var(--space-size-6);
+        }
+
+        ul li::before {
+            content: "💠";
+            padding: 8px;
+            transform: scale(0.8);
+        }
+
+        ul li a {
+            color: var(--color-accent-600);
+            text-decoration: none;
+        }
+        ul li a:visited {
+            color: var(--color-accent-800);
+        }
+    </style>
 </head>
 <body>
+    <main>
+        {{content}}
+    </main>
+    <h3>Table of contents</h3>
     <ul>
         @for links
             <li>
